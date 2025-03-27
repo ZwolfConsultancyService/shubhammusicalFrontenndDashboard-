@@ -25,10 +25,19 @@
 }
 
 #page-content-wrapper {
+  position: relative;
   min-width: 0;
   width: 100%;
 }
-.dashboard-page-heading{
- margin-left: 250;
-} 
+/* .dashboard-page-icon{
+position: absolute;
+top: 10px;
+left: 280px;
+}  */
+.dashboard-heading{
+
+  position: absolute;
+top:0px;
+left: 200px;
+}
 

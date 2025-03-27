@@ -17,14 +17,18 @@ const Dashbord = () => {
         </Col>
 
         <Col xs={isSidebarOpen ? 10 : 11} id="page-content-wrapper">
-          <div className="d-flex align-items-center my-3">
+          <div className="align-items-center my-3">
+          <div className="dashboard-heading d-flex mt-4 ">
             <FaBars 
               size={25} 
               className="me-3 cursor-pointer dashboard-page-icon" 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
               style={{ cursor: "pointer" }} 
             />
-            <h3 className="dashboard-page-heading">Dashboard - {location.pathname.replace("/", "") || "Home"}</h3>
+         
+           <h3 className="">Dashboard - {location.pathname.replace("/", "") || "Home"}</h3>
+
+           </div>
           </div>
 
           {/* Renders the selected route component */}

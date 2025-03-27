@@ -2,8 +2,7 @@ import React from "react";
 import { Nav } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import {  FaTimes } from "react-icons/fa";
- import "./Sidebar.css";
-
+import "./Sidebar.css";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const location = useLocation();
@@ -16,19 +15,19 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   return (
     <div className={`sidebar bg-light ${isSidebarOpen ? "open" : "closed"}`}>
       <div className="sidebar-header d-flex justify-content-between align-items-center p-3">
-        <h5 className="fw-bold m-0">Dashboard</h5>
+        <h5 className="fw-bold m-0 ">Dashboard</h5>
       
       </div>
 
-      <Nav className="flex-column p-3 vh-100">
+      <Nav className="flex-column vh-100">
         <Nav.Item>
-          <Link 
+          {/* <Link 
             to="/home" 
             className={`nav-link  ${location.pathname === "/home" ? "active" : ""}`} 
             onClick={handleNavigation}
           >
             Home
-          </Link>
+          </Link> */}
         </Nav.Item>
 
         <Nav.Item>
@@ -52,19 +51,19 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         </Nav.Item>
 
         <Nav.Item>
-          <Link 
+          {/* <Link 
             to="/logout" 
             className={`nav-link ${location.pathname === "/logout" ? "active" : ""}`} 
             onClick={handleNavigation}
           >
             Log Out
-          </Link>
+          </Link> */}
         </Nav.Item>
 
         <div>   <p
           className="sidebar-toggle-icon"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          style={{ cursor: "pointer", fontSize: "15px" }}
+          style={{ cursor: "pointer", fontSize: "15px", paddingLeft:"12px" }}
         > Close Menu</p></div>
 
       </Nav>

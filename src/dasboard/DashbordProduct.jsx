@@ -97,35 +97,35 @@ const DashbordProduct = () => {
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center main-dashbord">
-        <div className="text-end">
+      <div className="text-end add-product-button">
           <button 
-            className="btn btn-outline-dark add-product-button" 
+            className="btn btn-outline-dark " 
             onClick={() => setIsFormOpen(true)}
           >
             Add Product
           </button>
-        </div>
-
+        </div>  
+    
         {/* Show AddProductForm if isFormOpen is true */}
-        {isFormOpen && (
+     {isFormOpen && (
           <AddProductForm 
             isOpen={isFormOpen} 
             closeForm={handleCloseForm} 
           />
-        )}
+        )} 
 
         {/* Show EditProductForm if isEditFormOpen is true */}
-        {isEditFormOpen && currentProduct && (
+       {isEditFormOpen && currentProduct && (
   <AddProductForm 
     isOpen={isEditFormOpen}
     closeForm={handleCloseForm}
     product={currentProduct}
   />
-)}
+)} 
 
-      </div>
+   </div>
 
-      <div className="table-responsive mt-3">
+      <div className="table-responsive mt-5">
         <table className="table table-hover">
           <thead className="table-dark">
             <tr>
