@@ -63,12 +63,12 @@ function AddProductForm({ isOpen, closeForm, product }) {
 
     try {
       if (product) {
-        await axios.put(`http://localhost:8000/api/products/edit/${product._id}`, formDataToSend, {
+        await axios.put(`https://shubhammusicalplacebackend.onrender.com/api/products/edit/${product._id}`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Product updated successfully");
       } else {
-        await axios.post("http://localhost:8000/api/products/add", formDataToSend, {
+        await axios.post("https://shubhammusicalplacebackend.onrender.com/api/products/add", formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Product added successfully");
