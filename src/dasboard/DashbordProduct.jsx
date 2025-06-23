@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./DashbordProduct.css";
 import AddProductForm from './AddProductForm';
 
-
 const DashbordProduct = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
@@ -61,6 +60,7 @@ const DashbordProduct = () => {
       }
     }
   };
+
   // Edit product handler
   const handleEditProduct = (product) => {
     setCurrentProduct(product);
@@ -97,7 +97,7 @@ const DashbordProduct = () => {
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center main-dashbord">
-      <div className="text-end add-product-button">
+        <div className="text-end add-product-button">
           <button 
             className="btn btn-outline-dark " 
             onClick={() => setIsFormOpen(true)}
@@ -107,7 +107,7 @@ const DashbordProduct = () => {
         </div>  
     
         {/* Show AddProductForm if isFormOpen is true */}
-     {isFormOpen && (
+        {isFormOpen && (
           <AddProductForm 
             isOpen={isFormOpen} 
             closeForm={handleCloseForm} 
@@ -115,15 +115,14 @@ const DashbordProduct = () => {
         )} 
 
         {/* Show EditProductForm if isEditFormOpen is true */}
-       {isEditFormOpen && currentProduct && (
-  <AddProductForm 
-    isOpen={isEditFormOpen}
-    closeForm={handleCloseForm}
-    product={currentProduct}
-  />
-)} 
-
-   </div>
+        {isEditFormOpen && currentProduct && (
+          <AddProductForm 
+            isOpen={isEditFormOpen}
+            closeForm={handleCloseForm}
+            product={currentProduct}
+          />
+        )} 
+      </div>
 
       <div className="table-responsive mt-5">
         <table className="table table-hover">
@@ -153,8 +152,8 @@ const DashbordProduct = () => {
                 <td>{product.name}</td>
                 <td>{product.description}</td>
                 <td>₹{product.price.toLocaleString()}</td>
-                <td>{product.category}</td>
-                <td>{product.bestseller ? 'Yes' : 'No'}</td>
+                <td>{product.category?.name || 'No Category'}</td>
+                <td>{product.bestSeller ? 'Yes' : 'No'}</td>
                 <td>
                   <span 
                     className="btn text-success me-2 fw-bold"
