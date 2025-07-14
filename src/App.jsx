@@ -36,6 +36,7 @@ import Dashbord from "./dasboard/Dashbord";
 import AddProductForm from "./dasboard/AddProductForm";
 import Orders from "./dasboard/Orders";
 import DashbordProduct from "./dasboard/DashbordProduct"; 
+import User from "./dasboard/User";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           {/* Nested Routes */}
           <Route path="products" element={<DashbordProduct />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="/users" element={<User />} />
           {/* <Route path="addproduct" element={<AddProductForm />} />  */}
         </Route>
       </Routes>
