@@ -1,16 +1,37 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
-import { FaTimes, FaHome, FaBox, FaShoppingCart, FaUsers } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaTimes, FaHome, FaBox, FaShoppingCart, FaUsers, FaSignOutAlt } from "react-icons/fa";
 import "./Sidebar.css";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Function to close sidebar and navigate (especially for mobile)
   const handleNavigation = () => {
     if (isMobile) {
       setIsSidebarOpen(false);
+    }
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    // Show confirmation dialog
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    
+    if (confirmLogout) {
+      // Remove token and user data from storage
+      sessionStorage.removeItem('adminToken');
+      sessionStorage.removeItem('adminUser');
+      
+      // Close sidebar if mobile
+      if (isMobile) {
+        setIsSidebarOpen(false);
+      }
+      
+      // Redirect to login page
+      navigate('/login');
     }
   };
 
@@ -37,7 +58,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
           <Link
             to="/"
             className={`nav-link d-flex align-items-center py-2 px-3 ${
-              location.pathname === "/home" ? "active" : ""
+              location.pathname === "/" ? "active" : ""
             }`}
             onClick={handleNavigation}
           >
@@ -90,16 +111,14 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
 
         {/* Logout */}
         <Nav.Item className="mb-1">
-          <Link
-            to="/logout"
-            className={`nav-link d-flex align-items-center py-2 px-3 ${
-              location.pathname === "/logout" ? "active" : ""
-            }`}
-            onClick={handleNavigation}
+          <button
+            onClick={handleLogout}
+            className={`nav-link d-flex align-items-center py-2 px-3 border-0 bg-transparent w-100 text-start text-danger`}
+            style={{ cursor: "pointer" }}
           >
-            <FaTimes className="me-2" />
+            <FaSignOutAlt className="me-2" />
             {isSidebarOpen && <span>Log Out</span>}
-          </Link>
+          </button>
         </Nav.Item>
       </Nav>
 
