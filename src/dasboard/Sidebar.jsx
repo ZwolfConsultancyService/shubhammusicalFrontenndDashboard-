@@ -116,7 +116,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
           >
             <FaSignOutAlt className="me-2" />
             {isSidebarOpen && <span>Log Out</span>}
-          </button>
+          </Link>
         </Nav.Item>
       </Nav>
 
