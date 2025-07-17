@@ -1,13 +1,18 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-import { FaTimes, FaHome, FaBox, FaShoppingCart, FaUsers } from "react-icons/fa";
+import {
+  FaTimes,
+  FaHome,
+  FaBox,
+  FaShoppingCart,
+  FaUsers,
+} from "react-icons/fa";
 import "./Sidebar.css";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
   const location = useLocation();
 
-  // Function to close sidebar and navigate (especially for mobile)
   const handleNavigation = () => {
     if (isMobile) {
       setIsSidebarOpen(false);
@@ -15,29 +20,29 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
   };
 
   return (
-    <div className={`sidebar bg-light ${isSidebarOpen ? "open" : "closed"} ${isMobile ? 'mobile-sidebar' : ''}`}>
+    <div
+      className={`sidebar bg-light ${
+        isSidebarOpen ? "open" : "closed"
+      } ${isMobile ? "mobile-sidebar" : ""}`}
+    >
       {/* Header */}
-      <div className="sidebar-header d-flex justify-content-between align-items-center p-3">
-        <h5 className="fw-bold m-0 fs-6 fs-md-5">
-          {isSidebarOpen ? "Dashboard" : ""}
-        </h5>
+      <div className="sidebar-header p-3">
+        <h5 className="fw-bold m-0">{isSidebarOpen ? "Dashboard" : ""}</h5>
         {isMobile && (
           <FaTimes
-            className="text-dark cursor-pointer"
+            className="text-dark close-icon"
             onClick={() => setIsSidebarOpen(false)}
-            style={{ cursor: "pointer" }}
           />
         )}
       </div>
 
-      {/* Navigation */}
+      {/* Nav links */}
       <Nav className="flex-column">
-        {/* Home */}
-        <Nav.Item className="mb-1">
+        <Nav.Item>
           <Link
             to="/"
-            className={`nav-link d-flex align-items-center py-2 px-3 ${
-              location.pathname === "/home" ? "active" : ""
+            className={`nav-link d-flex align-items-center px-3 py-2 ${
+              location.pathname === "/" ? "active" : ""
             }`}
             onClick={handleNavigation}
           >
@@ -46,11 +51,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
           </Link>
         </Nav.Item>
 
-        {/* Products */}
-        <Nav.Item className="mb-1">
+        <Nav.Item>
           <Link
             to="/products"
-            className={`nav-link d-flex align-items-center py-2 px-3 ${
+            className={`nav-link d-flex align-items-center px-3 py-2 ${
               location.pathname === "/products" ? "active" : ""
             }`}
             onClick={handleNavigation}
@@ -60,11 +64,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
           </Link>
         </Nav.Item>
 
-        {/* Orders */}
-        <Nav.Item className="mb-1">
+        <Nav.Item>
           <Link
             to="/orders"
-            className={`nav-link d-flex align-items-center py-2 px-3 ${
+            className={`nav-link d-flex align-items-center px-3 py-2 ${
               location.pathname === "/orders" ? "active" : ""
             }`}
             onClick={handleNavigation}
@@ -74,11 +77,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
           </Link>
         </Nav.Item>
 
-        {/* Users */}
-        <Nav.Item className="mb-1">
+        <Nav.Item>
           <Link
             to="/users"
-            className={`nav-link d-flex align-items-center py-2 px-3 ${
+            className={`nav-link d-flex align-items-center px-3 py-2 ${
               location.pathname === "/users" ? "active" : ""
             }`}
             onClick={handleNavigation}
@@ -88,11 +90,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
           </Link>
         </Nav.Item>
 
-        {/* Logout */}
-        <Nav.Item className="mb-1">
+        <Nav.Item>
           <Link
             to="/logout"
-            className={`nav-link d-flex align-items-center py-2 px-3 ${
+            className={`nav-link d-flex align-items-center px-3 py-2 ${
               location.pathname === "/logout" ? "active" : ""
             }`}
             onClick={handleNavigation}
@@ -103,15 +104,14 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
         </Nav.Item>
       </Nav>
 
-      {/* Close Menu Button (Desktop only) */}
+      {/* Desktop Toggle */}
       {!isMobile && (
-        <div className="mt-auto p-3">
+        <div className="p-3 mt-auto">
           <p
-            className="sidebar-toggle-icon mb-0 small text-muted"
+            className="sidebar-toggle-icon small text-muted mb-0"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            style={{ cursor: "pointer" }}
           >
-            {isSidebarOpen ? "Close Menu" : ""}
+            {isSidebarOpen ? "Close Menu" : "Open Menu"}
           </p>
         </div>
       )}

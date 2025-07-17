@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,43 +11,19 @@ function AddProductForm({ isOpen, closeForm, product }) {
   const [image3, setImage3] = useState(null);
   const [isChecked, setIsChecked] = useState(product?.newArrival || false);
   const [isChecked1, setIsChecked1] = useState(product?.bestSeller || false);
-  const [categories, setCategories] = useState([]);
-  const [loadingCategories, setLoadingCategories] = useState(false);
   const [formData, setFormData] = useState({
     name: product?.name || "",
     price: product?.price || "",
-    category: product?.category?._id || product?.category || "",
+    category: product?.category || "",
     description: product?.description || ""
   });
-
-  // Fetch categories from backend
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setLoadingCategories(true);
-      try {
-        const response = await axios.get("https://shubhammusicalplacebackend.onrender.com/api/categories/");
-        // Fix: Access the data property from the response
-        setCategories(response?.data?.data || []);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        alert("Failed to load categories");
-        setCategories([]); // Set empty array on error
-      } finally {
-        setLoadingCategories(false);
-      }
-    };
-
-    if (isOpen) {
-      fetchCategories();
-    }
-  }, [isOpen]);
 
   useEffect(() => {
     if (product) {
       setFormData({
         name: product.name,
         price: product.price,
-        category: product.category?._id || product.category,
+        category: product.category,
         description: product.description
       });
       setIsChecked(product.newArrival || false);
@@ -72,13 +49,6 @@ function AddProductForm({ isOpen, closeForm, product }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validation
-    if (!formData.category) {
-      alert("Please select a category");
-      return;
-    }
-
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("price", formData.price);
@@ -118,78 +88,30 @@ function AddProductForm({ isOpen, closeForm, product }) {
         <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
             <label className="fw-bold">Product Name:</label>
-            <input 
-              type="text" 
-              name="name" 
-              className="form-control" 
-              value={formData.name} 
-              onChange={handleChange} 
-              required
-            />
+            <input type="text" name="name" className="form-control" value={formData.name} onChange={handleChange} />
           </div>
           <div className="d-flex gap-3">
             <div className="form-group flex-grow-1">
               <label className="fw-bold">Price:</label>
-              <input 
-                type="number" 
-                name="price" 
-                className="form-control" 
-                value={formData.price} 
-                onChange={handleChange} 
-                min="0"
-                step="0.01"
-                required
-              />
+              <input type="text" name="price" className="form-control" value={formData.price} onChange={handleChange} />
             </div>
             <div className="form-group flex-grow-1">
               <label className="fw-bold">Category:</label>
-              <select 
-                name="category" 
-                className="form-control" 
-                value={formData.category} 
-                onChange={handleChange}
-                required
-                disabled={loadingCategories}
-              >
-                <option value="">
-                  {loadingCategories ? "Loading categories..." : "Select a category"}
-                </option>
-                {
-                  categories && categories.length > 0 && categories.map((category) => (
-                    <option key={category._id} value={category._id}>
-                      {category.name}
-                    </option>
-                  ))
-                }
-              </select>
+              <input type="text" name="category" className="form-control" value={formData.category} onChange={handleChange} />
             </div>
           </div>
           <div className="form-group">
             <label className="fw-bold">Description:</label>
-            <textarea 
-              name="description" 
-              className="form-control" 
-              value={formData.description} 
-              onChange={handleChange}
-              rows="3"
-            />
+            <input type="text" name="description" className="form-control" value={formData.description} onChange={handleChange} />
           </div>
           <div className="d-flex gap-3">
             <div className="form-group flex-grow-1">
               <label className="fw-bold">New Arrival:</label>
-              <input 
-                type="checkbox" 
-                checked={isChecked} 
-                onChange={(e) => setIsChecked(e.target.checked)} 
-              />
+              <input type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />
             </div>
             <div className="form-group flex-grow-1">
               <label className="fw-bold">Best Seller:</label>
-              <input 
-                type="checkbox" 
-                checked={isChecked1} 
-                onChange={(e) => setIsChecked1(e.target.checked)} 
-              />
+              <input type="checkbox" checked={isChecked1} onChange={(e) => setIsChecked1(e.target.checked)} />
             </div>
           </div>
 
@@ -197,14 +119,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
             <div key={index} className="image-upload-container">
               <label htmlFor={`file-input-${index + 1}`} className="image-label">
                 <div className="image-preview">
-                  <img 
-                    src={
-                      image instanceof File 
-                        ? URL.createObjectURL(image) 
-                        : image?.url || "https://via.placeholder.com/100"
-                    } 
-                    alt="Preview" 
-                  />
+                  <img src={image instanceof File ? URL.createObjectURL(image) : image?.url || "https://via.placeholder.com/100"} alt="Preview" />
                 </div>
               </label>
               <input
@@ -218,13 +133,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
             </div>
           ))}
 
-          <button 
-            type="submit" 
-            className="btn btn-dark text-light w-100 mt-3 fw-bold"
-            disabled={loadingCategories}
-          >
-            {product ? "Update Product" : "Submit"}
-          </button>
+          <button type="submit" className="btn btn-dark text-light w-100 mt-3 fw-bold">{product ? "Update Product" : "Submit"}</button>
         </form>
       </div>
     </div>
@@ -232,3 +141,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
 }
 
 export default AddProductForm;
+
+
+
+
