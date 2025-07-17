@@ -1,7 +1,7 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
-import { FaTimes, FaHome, FaBox, FaShoppingCart, FaUsers } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaTimes, FaHome, FaBox, FaShoppingCart, FaUsers, FaSignOutAlt } from "react-icons/fa";
 import "./Sidebar.css";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, isMobile }) => {
