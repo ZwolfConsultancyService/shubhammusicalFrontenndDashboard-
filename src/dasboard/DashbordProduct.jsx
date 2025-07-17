@@ -156,7 +156,7 @@ const DashbordProduct = () => {
                   />
                 </div>
               </div>
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <div className="filter-box">
                   <i className="fas fa-filter filter-icon"></i>
                   <select
@@ -170,8 +170,8 @@ const DashbordProduct = () => {
                     ))}
                   </select>
                 </div>
-              </div>
-              <div className="col-md-2">
+              </div> */}
+              {/* <div className="col-md-2">
                 <div className="view-toggle">
                   <button
                     className={`btn view-btn ${viewMode === "grid" ? "active" : ""}`}
@@ -186,7 +186,7 @@ const DashbordProduct = () => {
                     <i className="fas fa-list"></i>
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
