@@ -14,6 +14,10 @@ const DashbordProduct = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [viewMode, setViewMode] = useState("grid");
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
 
   // Fetch products function
   const fetchProducts = async () => {
@@ -33,6 +37,11 @@ const DashbordProduct = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  // Reset to first page when search or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
 
   // Delete product function
   const handleDeleteProduct = async (productId) => {
@@ -85,6 +94,58 @@ const DashbordProduct = () => {
     const matchesCategory = selectedCategory === "" || product.category?.name === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Pagination handlers
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= maxVisiblePages; i++) {
+          pages.push(i);
+        }
+      } else if (currentPage >= totalPages - 2) {
+        for (let i = totalPages - maxVisiblePages + 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+          pages.push(i);
+        }
+      }
+    }
+    
+    return pages;
+  };
 
   // Get unique categories
   const categories = [...new Set(products.map(p => p.category?.name).filter(Boolean))];
@@ -156,7 +217,7 @@ const DashbordProduct = () => {
                   />
                 </div>
               </div>
-              {/* <div className="col-md-4">
+              <div className="col-md-4">
                 <div className="filter-box">
                   <i className="fas fa-filter filter-icon"></i>
                   <select
@@ -170,18 +231,18 @@ const DashbordProduct = () => {
                     ))}
                   </select>
                 </div>
-              </div> */}
+              </div>
               {/* <div className="col-md-2">
                 <div className="view-toggle">
-                  <button
-                    className={`btn view-btn ${viewMode === "grid" ? "active" : ""}`}
-                    onClick={() => setViewMode("grid")}
+                  <button 
+                    className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                    onClick={() => setViewMode('grid')}
                   >
                     <i className="fas fa-th"></i>
                   </button>
-                  <button
-                    className={`btn view-btn ${viewMode === "list" ? "active" : ""}`}
-                    onClick={() => setViewMode("list")}
+                  <button 
+                    className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
+                    onClick={() => setViewMode('list')}
                   >
                     <i className="fas fa-list"></i>
                   </button>
@@ -191,17 +252,22 @@ const DashbordProduct = () => {
           </div>
         </div>
 
-        {/* Products Count */}
-        <div className="mb-3">
-          <p className="products-count">
-            Showing {filteredProducts.length} of {products.length} products
+        {/* Products Count and Pagination Info */}
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <p className="products-count mb-0">
+            Showing {indexOfFirstProduct + 1}-{Math.min(indexOfLastProduct, filteredProducts.length)} of {filteredProducts.length} products
           </p>
+          {totalPages > 1 && (
+            <p className="pagination-info mb-0">
+              Page {currentPage} of {totalPages}
+            </p>
+          )}
         </div>
 
         {/* Products Display */}
         {viewMode === "grid" ? (
           <div className="row g-4">
-            {filteredProducts.map(product => (
+            {currentProducts.map(product => (
               <div key={product._id} className="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                 <div className="card product-card">
                   <div className="product-image-container">
@@ -254,7 +320,7 @@ const DashbordProduct = () => {
           </div>
         ) : (
           <div className="list-view">
-            {filteredProducts.map(product => (
+            {currentProducts.map(product => (
               <div key={product._id} className="card product-list-item mb-3">
                 <div className="card-body">
                   <div className="row align-items-center">
@@ -304,6 +370,83 @@ const DashbordProduct = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="pagination-container">
+            <nav aria-label="Product pagination">
+              <ul className="pagination pagination-custom justify-content-center">
+                {/* Previous Button */}
+                <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                  <button 
+                    className="page-link"
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                  >
+                    <i className="fas fa-chevron-left me-1"></i>
+                    <span className="d-none d-sm-inline">Previous</span>
+                  </button>
+                </li>
+
+                {/* First Page */}
+                {currentPage > 3 && totalPages > 5 && (
+                  <>
+                    <li className="page-item">
+                      <button className="page-link" onClick={() => handlePageChange(1)}>
+                        1
+                      </button>
+                    </li>
+                    {currentPage > 4 && (
+                      <li className="page-item disabled">
+                        <span className="page-link">...</span>
+                      </li>
+                    )}
+                  </>
+                )}
+
+                {/* Page Numbers */}
+                {getPageNumbers().map(pageNumber => (
+                  <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+                    <button 
+                      className="page-link"
+                      onClick={() => handlePageChange(pageNumber)}
+                    >
+                      {pageNumber}
+                    </button>
+                  </li>
+                ))}
+
+                {/* Last Page */}
+                {currentPage < totalPages - 2 && totalPages > 5 && (
+                  <>
+                    {currentPage < totalPages - 3 && (
+                      <li className="page-item disabled">
+                        <span className="page-link">...</span>
+                      </li>
+                    )}
+                    <li className="page-item">
+                      <button className="page-link" onClick={() => handlePageChange(totalPages)}>
+                        {totalPages}
+                      </button>
+                    </li>
+                  </>
+                )}
+
+                {/* Next Button */}
+                <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                  <button 
+                    className="page-link"
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    <span className="d-none d-sm-inline">Next</span>
+                    <i className="fas fa-chevron-right ms-1"></i>
+                  </button>
+                </li>
+              </ul>
+            </nav>
           </div>
         )}
 
