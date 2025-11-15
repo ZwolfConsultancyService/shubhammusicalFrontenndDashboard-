@@ -12,6 +12,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
   const [isChecked1, setIsChecked1] = useState(product?.bestSeller || false);
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: product?.name || "",
     price: product?.price || "",
@@ -77,6 +78,8 @@ function AddProductForm({ isOpen, closeForm, product }) {
       return;
     }
 
+    setIsSubmitting(true);
+
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("price", formData.price);
@@ -105,6 +108,8 @@ function AddProductForm({ isOpen, closeForm, product }) {
     } catch (error) {
       console.error("Error submitting product:", error);
       alert("Failed to submit product");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -123,6 +128,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
               value={formData.name} 
               onChange={handleChange} 
               required
+              disabled={isSubmitting}
             />
           </div>
           <div className="d-flex gap-3">
@@ -137,6 +143,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
                 min="0"
                 step="0.01"
                 required
+                disabled={isSubmitting}
               />
             </div>
             <div className="form-group flex-grow-1">
@@ -147,7 +154,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
                 value={formData.category} 
                 onChange={handleChange}
                 required
-                disabled={loadingCategories}
+                disabled={loadingCategories || isSubmitting}
               >
                 <option value="">
                   {loadingCategories ? "Loading categories..." : "Select a category"}
@@ -170,6 +177,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
               value={formData.description} 
               onChange={handleChange}
               rows="3"
+              disabled={isSubmitting}
             />
           </div>
           <div className="d-flex gap-3">
@@ -187,7 +195,8 @@ function AddProductForm({ isOpen, closeForm, product }) {
               <input 
                 type="checkbox" 
                 checked={isChecked1} 
-                onChange={(e) => setIsChecked1(e.target.checked)} 
+                onChange={(e) => setIsChecked1(e.target.checked)}
+                disabled={isSubmitting}
               />
             </div>
           </div>
@@ -212,6 +221,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
                 accept="image/*"
                 onChange={(e) => handleImageChange(e, [setImage1, setImage2, setImage3][index])}
                 style={{ display: "none" }}
+                disabled={isSubmitting}
               />
               <p className="fw-bold">Image {index + 1}</p>
             </div>
@@ -220,9 +230,16 @@ function AddProductForm({ isOpen, closeForm, product }) {
           <button 
             type="submit" 
             className="btn btn-dark text-light w-100 mt-3 fw-bold"
-            disabled={loadingCategories}
+            disabled={loadingCategories || isSubmitting}
           >
-            {product ? "Update Product" : "Submit"}
+            {isSubmitting ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {product ? "Updating..." : "Submitting..."}
+              </>
+            ) : (
+              product ? "Update Product" : "Submit"
+            )}
           </button>
         </form>
       </div>
