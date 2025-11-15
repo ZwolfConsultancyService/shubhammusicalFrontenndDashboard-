@@ -19,18 +19,16 @@ function AddProductForm({ isOpen, closeForm, product }) {
     description: product?.description || ""
   });
 
-  // Fetch categories from backend
   useEffect(() => {
     const fetchCategories = async () => {
       setLoadingCategories(true);
       try {
         const response = await axios.get("https://shubhammusicalplacebackend.onrender.com/api/categories/");
-        // Fix: Access the data property from the response
         setCategories(response?.data?.data || []);
       } catch (error) {
         console.error("Error fetching categories:", error);
         alert("Failed to load categories");
-        setCategories([]); // Set empty array on error
+        setCategories([]); 
       } finally {
         setLoadingCategories(false);
       }
@@ -175,7 +173,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
             />
           </div>
           <div className="d-flex gap-3">
-            <div className="form-group flex-grow-1">
+           {/* <div className="form-group flex-grow-1">
               <label className="fw-bold">New Arrival:</label>
               <input 
                 type="checkbox" 
@@ -183,6 +181,7 @@ function AddProductForm({ isOpen, closeForm, product }) {
                 onChange={(e) => setIsChecked(e.target.checked)} 
               />
             </div>
+            */}
             <div className="form-group flex-grow-1">
               <label className="fw-bold">Best Seller:</label>
               <input 
